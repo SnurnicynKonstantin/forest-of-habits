@@ -3,20 +3,12 @@ server:
 
 spring:
   application.name: forest_of_habits_local
-#  security:
-#    oauth2:
-#      client:
-#        provider:
-#          expi:
-#            token-uri: https://exchange-pi.au.auth0.com/oauth/token
-#        registration:
-#          expi:
-#            authorization-grant-type: client_credentials
-#            client-id: pGUwy1tpJmyt4trq5iQSq56J7kvFHlfq
-#            client-secret: DYRsshwwVxnlfW37KR8a5ZI5bWwrMMq8OtNIDIhIub-KjJEyUIvSp1t3WNjY3sZG
-
   datasource:
     url: jdbc:postgresql://localhost:16432/forest_local
     username: postgres
     password: postgresPass
     driver-class-name: org.postgresql.Driver
+
+jwt:
+  secret:
+    key: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==
