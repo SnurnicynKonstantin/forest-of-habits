@@ -1,6 +1,7 @@
 package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.config.jwt.JwtAuthentication;
+import com.example.forestofhabits.model.Account;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -22,22 +23,30 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtProvider {
+    private static final String ACCOUNT_ID = "accountId";
+    private static final String USER_NAME = "userName";
+
     private final SecretKey jwtAccessSecret;
 
-    public JwtProvider(@Value("${jwt.secret.key}") String jwtAccessSecret) {
+    private final int expirationInMinutes;
+
+    public JwtProvider(
+            @Value("${jwt.secret.key}") String jwtAccessSecret,
+            @Value("${jwt.expiration}") int expirationInMinutes) {
         this.jwtAccessSecret = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtAccessSecret));
+        this.expirationInMinutes = expirationInMinutes;
     }
 
-    public String generateAccessToken(User user) {
-        final LocalDateTime now = LocalDateTime.now();
-        final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
+    public String generateAccessToken(Account account) {
+        final Instant accessExpirationInstant = LocalDateTime.now()
+                .plusMinutes(expirationInMinutes).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
         return Jwts.builder()
-                .setSubject(user.getId())
+                .setSubject("JWT Auth token")
                 .setExpiration(accessExpiration)
                 .signWith(jwtAccessSecret)
-                .claim("roles", user.getRoles())
-                .claim("firstName", user.getFirstName())
+                .claim(ACCOUNT_ID, account.getId())
+                .claim(USER_NAME, account.getName())
                 .compact();
     }
 
@@ -72,9 +81,8 @@ public class JwtProvider {
 
     public static JwtAuthentication generateJwtAuthentication(Claims claims) {
         final JwtAuthentication jwtInfoToken = new JwtAuthentication();
-//        jwtInfoToken.setRoles(getRoles(claims));
-        jwtInfoToken.setFirstName(claims.get("firstName", String.class));
-        jwtInfoToken.setUsername(claims.getSubject());
+        jwtInfoToken.setAccountId(claims.get(ACCOUNT_ID, String.class));
+        jwtInfoToken.setUserName(claims.get(USER_NAME, String.class));
         return jwtInfoToken;
     }
 }

@@ -3,7 +3,9 @@ package com.example.forestofhabits.controller;
 import com.example.forestofhabits.controller.dto.JwtResponseDto;
 import com.example.forestofhabits.controller.dto.LoginRequestDto;
 import com.example.forestofhabits.service.AuthenticationService;
+import com.example.forestofhabits.util.Util;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -19,14 +21,16 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello";//greetingService.getGreeting();
-    }
-
-    @PostMapping("login")
+    @PreAuthorize("permitAll()")
+    @PostMapping("/login")
     public ResponseEntity<JwtResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
+    }
+
+    @PreAuthorize("authenticated")
+    @GetMapping(value = "/test")
+    public String test() {
+        return Util.getAuthInfo().getAccountId();
     }
 
     public String registration() {

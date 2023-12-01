@@ -1,5 +1,7 @@
 server:
   port: 8082
+  servlet:
+    context-path: /api
 
 spring:
   application.name: forest_of_habits_local
@@ -10,5 +12,10 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 jwt:
+  expiration: 60
   secret:
     key: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==
+
+#logging:
+#  level:
+#    root: DEBUG

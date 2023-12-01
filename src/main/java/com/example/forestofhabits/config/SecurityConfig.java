@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -22,11 +24,11 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(
-                        authz -> authz
-                                .antMatchers("/api/auth/login", "/api/auth/token").permitAll()
+                        auth -> auth
+                                .antMatchers("/auth/login", "/api/auth/token").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
-                                .addFilterAfter(jwtFilter)
+                                .addFilterBefore(jwtFilter, AbstractPreAuthenticatedProcessingFilter.class)
                 ).build();
     }
 }

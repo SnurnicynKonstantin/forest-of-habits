@@ -11,8 +11,8 @@ import java.util.Collections;
 public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
-    private String username;
-    private String firstName;
+    private String accountId;
+    private String userName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -26,7 +26,7 @@ public class JwtAuthentication implements Authentication {
     public Object getDetails() { return null; }
 
     @Override
-    public Object getPrincipal() { return username; }
+    public Object getPrincipal() { return userName; }
 
     @Override
     public boolean isAuthenticated() { return authenticated; }
@@ -37,7 +37,7 @@ public class JwtAuthentication implements Authentication {
     }
 
     @Override
-    public String getName() { return firstName; }
+    public String getName() { return userName; }
 
 }
 //https://struchkov.dev/blog/ru/jwt-implementation-in-spring/
