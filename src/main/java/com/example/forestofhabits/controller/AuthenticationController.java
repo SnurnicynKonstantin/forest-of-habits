@@ -2,6 +2,7 @@ package com.example.forestofhabits.controller;
 
 import com.example.forestofhabits.controller.dto.JwtResponseDto;
 import com.example.forestofhabits.controller.dto.LoginRequestDto;
+import com.example.forestofhabits.controller.dto.RegistrationDto;
 import com.example.forestofhabits.service.AuthenticationService;
 import com.example.forestofhabits.util.Util;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +22,19 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDto> login(@RequestBody LoginRequestDto loginRequest) {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
-    @PreAuthorize("authenticated")
     @GetMapping(value = "/test")
     public String test() {
         return Util.getAuthInfo().getAccountId();
     }
 
-    public String registration() {
-        return "";
+    @PostMapping("/registration")
+    public ResponseEntity<JwtResponseDto> registration(@RequestBody RegistrationDto registrationRequest) {
+        return ResponseEntity.ok(authenticationService.registration(registrationRequest));
     }
 }
 

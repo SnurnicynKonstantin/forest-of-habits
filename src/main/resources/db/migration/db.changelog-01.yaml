@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-account-table
+      author: Konstantin Snurnicyn
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          or:
+            tableExists:
+              tableName: account
+            changeSetExecuted:
+              id: add-account-table
+              author: Konstantin Snurnicyn
+              changelogFile: db/v1/db.changelog-01.yaml
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: account_id_pk
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: email
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: TEXT
+              - column:
+                  name: authenticated
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+            constraints:
+              - uniqueConstraint:
+                  columnNames: email
+                  constraintName: unique_account_email
+            tableName: account

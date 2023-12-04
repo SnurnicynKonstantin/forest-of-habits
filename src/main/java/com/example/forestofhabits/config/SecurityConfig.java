@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(
                         auth -> auth
-                                .antMatchers("/auth/login", "/api/auth/token").permitAll()
+                                .antMatchers("/auth/login", "/auth/registration").permitAll()
                                 .anyRequest().authenticated()
                                 .and()
                                 .addFilterBefore(jwtFilter, AbstractPreAuthenticatedProcessingFilter.class)

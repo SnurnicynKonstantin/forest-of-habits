@@ -10,6 +10,9 @@ spring:
     username: postgres
     password: postgresPass
     driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yaml
+    enabled: true
 
 jwt:
   expiration: 60
