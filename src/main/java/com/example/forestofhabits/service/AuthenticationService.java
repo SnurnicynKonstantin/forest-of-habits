@@ -49,7 +49,7 @@ public class AuthenticationService {
 
         accountRepository.save(newAccount);
 
-        //Send notification with link to email
+        //TODO: Send notification with link to email
 
         final String accessToken = jwtProvider.generateAccessToken(newAccount);
         return JwtResponseDto.builder().accessToken(accessToken).build();

@@ -6,11 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<?> handleException(Exception e) {
+    public ResponseEntity<?> handleUnauthorizedException(Exception e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleNotFoundException(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }
