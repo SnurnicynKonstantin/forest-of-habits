@@ -81,7 +81,7 @@ public class JwtProvider {
 
     public static JwtAuthentication generateJwtAuthentication(Claims claims) {
         final JwtAuthentication jwtInfoToken = new JwtAuthentication();
-        jwtInfoToken.setAccountId(claims.get(ACCOUNT_ID, String.class));
+        jwtInfoToken.setAccountId(claims.get(ACCOUNT_ID, Long.class));
         jwtInfoToken.setUserName(claims.get(USER_NAME, String.class));
         return jwtInfoToken;
     }

@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: migration/db.changelog-01.yaml
+      file: migration/base_migration.sql
       relativeToChangelogFile: true

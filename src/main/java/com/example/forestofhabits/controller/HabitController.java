@@ -13,32 +13,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/habit")
+//@RestController
+//@RequestMapping("/habit")
 public class HabitController {
 
-    private final HabitService habitService;
-
-    public HabitController(HabitService habitService) {
-        this.habitService = habitService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<HabitDto>> getListOfHabits() {
-        return ResponseEntity.ok(habitService.getListOfHabits());
-    }
-
-    @PostMapping
-    public ResponseEntity<CreateHabitDto> createHabit(@RequestBody CreateHabitDto request) {
-        habitService.createHabit(request.getName());
-        return ResponseEntity.ok(request);
-    }
-
-    @PostMapping("/select")
-    public ResponseEntity<?> selectHabit(@RequestBody SelectHabitDto request) {
-        habitService.selectHabit(request.getHabitId());
-        return ResponseEntity.ok().build();
-    }
+//    private final HabitService habitService;
+//
+//    public HabitController(HabitService habitService) {
+//        this.habitService = habitService;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<HabitDto>> getListOfHabits() {
+//        return ResponseEntity.ok(habitService.getListOfHabits());
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<CreateHabitDto> createHabit(@RequestBody CreateHabitDto request) {
+//        habitService.createHabit(request.getName());
+//        return ResponseEntity.ok(request);
+//    }
+//
+//    @PostMapping("/select")
+//    public ResponseEntity<?> selectHabit(@RequestBody SelectHabitDto request) {
+//        habitService.selectHabit(request.getHabitId());
+//        return ResponseEntity.ok().build();
+//    }
 }
 //1. List of habit current account (name, count of clicks)
 //2. Get one habit. Name, list of dates

@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/test")
-    public String test() {
+    public Long test() {
         return Util.getAuthInfo().getAccountId();
     }
 

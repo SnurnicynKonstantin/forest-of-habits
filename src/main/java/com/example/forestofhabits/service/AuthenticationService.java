@@ -40,10 +40,6 @@ public class AuthenticationService {
             throw new AuthException("Account with email = " + registrationDto.getEmail() + " already exist");
         }
 
-        if(!registrationDto.getPassword().equals(registrationDto.getPasswordConfirmation())) {
-            throw new AuthException("Password doesn't equals confirmation password");
-        }
-
         Account newAccount = Account.builder().email(registrationDto.getEmail())
                 .password(registrationDto.getPassword()).name(registrationDto.getName()).build();
 

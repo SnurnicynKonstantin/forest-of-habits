@@ -11,7 +11,7 @@ import java.util.Collections;
 public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
-    private String accountId;
+    private Long accountId;
     private String userName;
 
     @Override
