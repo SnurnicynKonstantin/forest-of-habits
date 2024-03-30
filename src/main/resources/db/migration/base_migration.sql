@@ -27,10 +27,9 @@ CREATE TABLE tree (
     forest_id SERIAL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255),
-    tree_type VARCHAR(100) NOT NULL,
+    type VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT now(),
-    top_limit INT,
-    period VARCHAR(100)
+    top_limit INT
 );
 
 ALTER TABLE tree
