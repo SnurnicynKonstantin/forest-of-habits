@@ -28,7 +28,7 @@ public class ForestController {
     return ResponseEntity.ok(forestService.getListOfForests());
   }
 
-  @PostMapping("/create")
+  @PostMapping
   public ResponseEntity<ForestDto> createForest(@RequestBody ForestDto request) {
     return ResponseEntity.ok(forestService.createForest(request.getName()));
   }

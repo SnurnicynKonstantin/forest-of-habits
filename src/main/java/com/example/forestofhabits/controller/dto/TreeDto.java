@@ -4,7 +4,7 @@ import com.example.forestofhabits.enums.TreeType;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Data
 @Builder
@@ -14,6 +14,6 @@ public class TreeDto {
   private String name;
   private String description;
   private TreeType type;
-  private Date createdAt;
-  private int topLimit;
+  private ZonedDateTime createdAt;
+  private int limit;
 }

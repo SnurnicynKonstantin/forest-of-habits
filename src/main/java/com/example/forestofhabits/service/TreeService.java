@@ -1,6 +1,7 @@
 package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.TreeDto;
+import com.example.forestofhabits.enums.TreeType;
 import com.example.forestofhabits.model.Forest;
 import com.example.forestofhabits.model.Tree;
 import com.example.forestofhabits.repository.ForestRepository;
@@ -28,31 +29,34 @@ public class TreeService {
                     TreeDto.builder()
                             .name(tree.getName())
                             .id(tree.getId())
+                            .forestId(forestId)
                             .description(tree.getDescription())
                             .type(tree.getType())
                             .createdAt(tree.getCreatedAt())
-                            .topLimit(tree.getTopLimit())
+                            .limit(tree.getLimitActionCount())
                             .build())
             .toList();
   }
 
-  public TreeDto createForest(TreeDto request) {
+  public TreeDto createTree(TreeDto request) {
+    boolean isBoolean = request.getType() == TreeType.BOOLEAN;
     Tree newTreet = Tree
             .builder()
             .name(request.getName())
             .description(request.getDescription())
             .type(request.getType())
             .forest(getForest(request.getForestId()))
-            .topLimit(request.getTopLimit())
+            .limitActionCount(isBoolean ? 1 : request.getLimit())
             .build();
     Tree createdTree = treeRepository.save(newTreet);
     return TreeDto
             .builder()
             .id(createdTree.getId())
+            .forestId(request.getForestId())
             .name(createdTree.getName())
             .description(createdTree.getDescription())
             .type(createdTree.getType())
-            .topLimit(createdTree.getTopLimit())
+            .limit(createdTree.getLimitActionCount())
             .createdAt(createdTree.getCreatedAt())
             .build();
   }
@@ -60,9 +64,15 @@ public class TreeService {
   public TreeDto updateTree(TreeDto request, Long id) {
     Tree tree = treeRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Tree with id = " + id + " doesn't exist"));
-    tree.setName(request.getName());
-    tree.setDescription(request.getDescription());
-    tree.setTopLimit(request.getTopLimit());
+
+    if(request.getName() != null && !request.getName().isBlank()) {
+      tree.setName(request.getName());
+    }
+
+    if(request.getDescription() != null && !request.getDescription().isBlank()) {
+      tree.setDescription(request.getDescription());
+    }
+
     Tree updatedTree = treeRepository.save(tree);
     return TreeDto
             .builder()
@@ -70,7 +80,7 @@ public class TreeService {
             .name(updatedTree.getName())
             .description(updatedTree.getDescription())
             .type(updatedTree.getType())
-            .topLimit(updatedTree.getTopLimit())
+            .limit(updatedTree.getLimitActionCount())
             .createdAt(updatedTree.getCreatedAt())
             .build();
   }

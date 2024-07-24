@@ -7,8 +7,9 @@ import java.time.ZonedDateTime;
 
 @Data
 @Builder
-public class ForestDto {
+public class ActionDto {
   private Long id;
-  private String name;
+  private Long treeId;
+  private String comment;
   private ZonedDateTime createdAt;
 }

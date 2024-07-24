@@ -1,7 +1,7 @@
 server:
   port: 8082
-  servlet:
-    context-path: /api
+#  servlet:
+#    context-path: /api
 
 spring:
   application.name: forest_of_habits_local

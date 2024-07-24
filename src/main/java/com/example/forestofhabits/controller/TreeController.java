@@ -1,8 +1,6 @@
 package com.example.forestofhabits.controller;
 
-import com.example.forestofhabits.controller.dto.ForestDto;
 import com.example.forestofhabits.controller.dto.TreeDto;
-import com.example.forestofhabits.service.ForestService;
 import com.example.forestofhabits.service.TreeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,8 +29,8 @@ public class TreeController {
   }
 
   @PostMapping
-  public ResponseEntity<TreeDto> createForest(@RequestBody TreeDto request) {
-    return ResponseEntity.ok(treeService.createForest(request));
+  public ResponseEntity<TreeDto> createTree(@RequestBody TreeDto request) {
+    return ResponseEntity.ok(treeService.createTree(request));
   }
 
   @PutMapping("/{id}")

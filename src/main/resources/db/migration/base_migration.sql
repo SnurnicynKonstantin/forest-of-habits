@@ -14,7 +14,7 @@ CREATE TABLE forest (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     account_id SERIAL NOT NULL,
-    created_at TIMESTAMP DEFAULT now()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
 );
 
 ALTER TABLE forest
@@ -28,22 +28,22 @@ CREATE TABLE tree (
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255),
     type VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP DEFAULT now(),
-    top_limit INT
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    limit_action_count INT
 );
 
 ALTER TABLE tree
     ADD CONSTRAINT fk_tree_forest
         FOREIGN KEY (forest_id) REFERENCES forest(id);
 
--- Log table
-CREATE TABLE incrementation_log (
+-- Action table
+CREATE TABLE action (
     id SERIAL PRIMARY KEY,
     tree_id SERIAL,
-    date TIMESTAMP DEFAULT now(),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     comment VARCHAR(255)
 );
 
-ALTER TABLE incrementation_log
-    ADD CONSTRAINT fk_inclog_tree
+ALTER TABLE action
+    ADD CONSTRAINT fk_action_tree
         FOREIGN KEY (tree_id) REFERENCES tree(id);
