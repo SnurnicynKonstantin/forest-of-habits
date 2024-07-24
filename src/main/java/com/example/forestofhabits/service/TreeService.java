@@ -2,6 +2,7 @@ package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.TreeDto;
 import com.example.forestofhabits.enums.TreeType;
+import com.example.forestofhabits.mapper.TreeMapper;
 import com.example.forestofhabits.model.Forest;
 import com.example.forestofhabits.model.Tree;
 import com.example.forestofhabits.repository.ForestRepository;
@@ -16,25 +17,19 @@ import java.util.List;
 public class TreeService {
   private final TreeRepository treeRepository;
   private final ForestRepository forestRepository;
+  private final TreeMapper treeMapper;
 
   public TreeService(TreeRepository treeRepository, ForestRepository forestRepository) {
     this.treeRepository = treeRepository;
     this.forestRepository = forestRepository;
+    this.treeMapper = TreeMapper.INSTANCE;
   }
 
   public List<TreeDto> getListOfTrees(Long forestId) {
     return treeRepository
             .findByForestAccountIdAndForestId(Util.getAuthInfo().getAccountId(), forestId)
-            .stream().map(tree ->
-                    TreeDto.builder()
-                            .name(tree.getName())
-                            .id(tree.getId())
-                            .forestId(forestId)
-                            .description(tree.getDescription())
-                            .type(tree.getType())
-                            .createdAt(tree.getCreatedAt())
-                            .limit(tree.getLimitActionCount())
-                            .build())
+            .stream()
+            .map(tree -> treeMapper.toDtoCustom(tree, forestId))
             .toList();
   }
 
@@ -49,16 +44,7 @@ public class TreeService {
             .limitActionCount(isBoolean ? 1 : request.getLimit())
             .build();
     Tree createdTree = treeRepository.save(newTreet);
-    return TreeDto
-            .builder()
-            .id(createdTree.getId())
-            .forestId(request.getForestId())
-            .name(createdTree.getName())
-            .description(createdTree.getDescription())
-            .type(createdTree.getType())
-            .limit(createdTree.getLimitActionCount())
-            .createdAt(createdTree.getCreatedAt())
-            .build();
+    return treeMapper.toDtoCustom(createdTree, request.getForestId());
   }
 
   public TreeDto updateTree(TreeDto request, Long id) {
@@ -74,15 +60,7 @@ public class TreeService {
     }
 
     Tree updatedTree = treeRepository.save(tree);
-    return TreeDto
-            .builder()
-            .id(updatedTree.getId())
-            .name(updatedTree.getName())
-            .description(updatedTree.getDescription())
-            .type(updatedTree.getType())
-            .limit(updatedTree.getLimitActionCount())
-            .createdAt(updatedTree.getCreatedAt())
-            .build();
+    return treeMapper.toDto(updatedTree);
   }
 
   public void deleteTree(Long id) {

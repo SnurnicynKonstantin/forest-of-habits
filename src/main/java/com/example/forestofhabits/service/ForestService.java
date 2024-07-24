@@ -1,6 +1,7 @@
 package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.ForestDto;
+import com.example.forestofhabits.mapper.ForestMapper;
 import com.example.forestofhabits.model.Account;
 import com.example.forestofhabits.model.Forest;
 import com.example.forestofhabits.repository.AccountRepository;
@@ -15,21 +16,19 @@ import java.util.List;
 public class ForestService {
     private final ForestRepository forestRepository;
     private final AccountRepository accountRepository;
+    private final ForestMapper forestMapper;
 
     public ForestService(ForestRepository forestRepository, AccountRepository accountRepository) {
         this.forestRepository = forestRepository;
         this.accountRepository = accountRepository;
+        this.forestMapper = ForestMapper.INSTANCE;
     }
 
     public List<ForestDto> getListOfForests() {
         return forestRepository //TODO: Replace on view with join
                 .findByAccountId(Util.getAuthInfo().getAccountId())
-                .stream().map(forest ->
-                        ForestDto.builder()
-                                .name(forest.getName())
-                                .id(forest.getId())
-                                .createdAt(forest.getCreatedAt())
-                                .build())
+                .stream()
+                .map(forestMapper::toDto)
                 .toList();
     }
 
@@ -40,12 +39,7 @@ public class ForestService {
                 .account(getCurrentAccount())
                 .build();
         Forest createdForest = forestRepository.save(newForest);
-        return ForestDto
-                .builder()
-                .id(createdForest.getId())
-                .name(createdForest.getName())
-                .createdAt(createdForest.getCreatedAt())
-                .build();
+        return forestMapper.toDto(createdForest);
     }
 
     public ForestDto updateForest(String forestName, Long forestId) {
@@ -53,12 +47,7 @@ public class ForestService {
                 .orElseThrow(() -> new EntityNotFoundException("Forest with id = " + forestId + " doesn't exist"));
         forest.setName(forestName);
         Forest updatedForest = forestRepository.save(forest);
-        return ForestDto
-                .builder()
-                .id(updatedForest.getId())
-                .name(updatedForest.getName())
-                .createdAt(updatedForest.getCreatedAt())
-                .build();
+        return forestMapper.toDto(updatedForest);
     }
 
     public void deleteForest(Long forestId) {

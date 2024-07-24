@@ -2,6 +2,7 @@ package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.ActionDto;
 import com.example.forestofhabits.exception.ValidateException;
+import com.example.forestofhabits.mapper.ActionMapper;
 import com.example.forestofhabits.model.Action;
 import com.example.forestofhabits.model.Tree;
 import com.example.forestofhabits.repository.ActionRepository;
@@ -17,21 +18,18 @@ public class ActionService {
 
   private final TreeRepository treeRepository;
 
+  private final ActionMapper actionMapper;
+
   public ActionService(ActionRepository actionRepository, TreeRepository treeRepository) {
     this.actionRepository = actionRepository;
     this.treeRepository = treeRepository;
+    this.actionMapper = ActionMapper.INSTANCE;
   }
 
   public List<ActionDto> getListOfActions(Long treeId) {
     return actionRepository
             .findByTreeId(treeId)
-            .stream().map(action ->
-                    ActionDto.builder()
-                            .id(action.getId())
-                            .treeId(treeId)
-                            .comment(action.getComment())
-                            .createdAt(action.getCreatedAt())
-                            .build())
+            .stream().map(action -> actionMapper.toDtoCustom(action, treeId))
             .toList();
   }
 
@@ -48,13 +46,7 @@ public class ActionService {
             .tree(getTree(request.getTreeId()))
             .build();
     Action createdAction = actionRepository.save(newAction);
-    return ActionDto
-            .builder()
-            .id(createdAction.getId())
-            .treeId(request.getTreeId())
-            .comment(createdAction.getComment())
-            .createdAt(createdAction.getCreatedAt())
-            .build();
+    return actionMapper.toDtoCustom(createdAction, request.getTreeId());
   }
 
   public void deleteAction(Long id) {

@@ -1,6 +1,5 @@
 # forest-of-habits
 
-Add counter logs
-Add url rules
-Add mappers
+Add url rules (Как правильно по урлам называть)
 Move to records
+Сделать валидацию юзера по всем операциям
