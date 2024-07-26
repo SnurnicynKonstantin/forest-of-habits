@@ -32,6 +32,13 @@ public class ForestService {
                 .toList();
     }
 
+    public ForestDto getById(Long forestId) {
+        //TODO: Probably raplase on getById + owner validation
+        Forest forest = forestRepository.getByIdAndAccountId(forestId, Util.getAuthInfo().getAccountId())
+                .orElseThrow(() -> new EntityNotFoundException("Forest with id = " + forestId + " doesn't exist"));;
+        return forestMapper.toDto(forest);
+    }
+
     public ForestDto createForest(String forestName) {
         Forest newForest = Forest
                 .builder()

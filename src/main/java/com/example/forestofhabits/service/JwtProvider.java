@@ -25,9 +25,8 @@ import java.util.Date;
 public class JwtProvider {
     private static final String ACCOUNT_ID = "accountId";
     private static final String USER_NAME = "userName";
-
+    private static final String EMAIL = "email";
     private final SecretKey jwtAccessSecret;
-
     private final int expirationInMinutes;
 
     public JwtProvider(
@@ -47,6 +46,7 @@ public class JwtProvider {
                 .signWith(jwtAccessSecret)
                 .claim(ACCOUNT_ID, account.getId())
                 .claim(USER_NAME, account.getName())
+                .claim(EMAIL, account.getEmail())
                 .compact();
     }
 
@@ -83,6 +83,7 @@ public class JwtProvider {
         final JwtAuthentication jwtInfoToken = new JwtAuthentication();
         jwtInfoToken.setAccountId(claims.get(ACCOUNT_ID, Long.class));
         jwtInfoToken.setUserName(claims.get(USER_NAME, String.class));
+        jwtInfoToken.setEmail(claims.get(EMAIL, String.class));
         return jwtInfoToken;
     }
 }

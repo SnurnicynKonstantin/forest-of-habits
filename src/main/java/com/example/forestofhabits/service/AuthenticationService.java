@@ -1,11 +1,16 @@
 package com.example.forestofhabits.service;
 
+import com.example.forestofhabits.config.jwt.JwtAuthentication;
 import com.example.forestofhabits.controller.dto.JwtResponseDto;
 import com.example.forestofhabits.controller.dto.LoginRequestDto;
 import com.example.forestofhabits.controller.dto.RegistrationDto;
+import com.example.forestofhabits.controller.dto.UserInfoDto;
 import com.example.forestofhabits.exception.AuthException;
+import com.example.forestofhabits.mapper.ActionMapper;
+import com.example.forestofhabits.mapper.JwtMapper;
 import com.example.forestofhabits.model.Account;
 import com.example.forestofhabits.repository.AccountRepository;
+import com.example.forestofhabits.util.Util;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,9 +21,12 @@ public class AuthenticationService {
 
     private final JwtProvider jwtProvider;
 
+    private final JwtMapper jwtMapper;
+
     public AuthenticationService(JwtProvider jwtProvider, AccountRepository accountRepository) {
         this.jwtProvider = jwtProvider;
         this.accountRepository = accountRepository;
+        this.jwtMapper = JwtMapper.INSTANCE;
     }
 
     public JwtResponseDto login(LoginRequestDto loginRequest) {
@@ -30,7 +38,7 @@ public class AuthenticationService {
         }
 
         final String accessToken = jwtProvider.generateAccessToken(account);
-        return JwtResponseDto.builder().accessToken(accessToken).build();
+        return jwtMapper.toDtoCustom(accessToken, account);
     }
 
     public JwtResponseDto registration(RegistrationDto registrationDto) {
@@ -48,6 +56,11 @@ public class AuthenticationService {
         //TODO: Send notification with link to email
 
         final String accessToken = jwtProvider.generateAccessToken(newAccount);
-        return JwtResponseDto.builder().accessToken(accessToken).build();
+        return jwtMapper.toDtoCustom(accessToken, newAccount);
+    }
+
+    public UserInfoDto getUserInfo() {
+        JwtAuthentication userInfo = Util.getAuthInfo();
+        return UserInfoDto.builder().username(userInfo.getUserName()).email(userInfo.getEmail()).build();
     }
 }

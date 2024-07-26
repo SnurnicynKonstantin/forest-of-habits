@@ -1,9 +1,7 @@
 package com.example.forestofhabits.mapper;
 
 import com.example.forestofhabits.controller.dto.ActionDto;
-import com.example.forestofhabits.controller.dto.TreeDto;
 import com.example.forestofhabits.model.Action;
-import com.example.forestofhabits.model.Tree;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

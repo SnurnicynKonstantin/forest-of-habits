@@ -13,6 +13,7 @@ public class JwtAuthentication implements Authentication {
     private boolean authenticated;
     private Long accountId;
     private String userName;
+    private String email;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

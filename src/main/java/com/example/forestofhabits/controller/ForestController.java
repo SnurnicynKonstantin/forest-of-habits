@@ -28,6 +28,11 @@ public class ForestController {
     return ResponseEntity.ok(forestService.getListOfForests());
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<ForestDto> getById(@PathVariable Long id) {
+    return ResponseEntity.ok(forestService.getById(id));
+  }
+
   @PostMapping
   public ResponseEntity<ForestDto> createForest(@RequestBody ForestDto request) {
     return ResponseEntity.ok(forestService.createForest(request.getName()));

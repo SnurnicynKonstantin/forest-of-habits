@@ -1,5 +1,6 @@
 package com.example.forestofhabits.controller;
 
+import com.example.forestofhabits.controller.dto.ExceptionDto;
 import com.example.forestofhabits.exception.AuthException;
 import com.example.forestofhabits.exception.ValidateException;
 import org.springframework.http.HttpStatus;
@@ -14,16 +15,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<?> handleUnauthorizedException(Exception e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(Exception e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(ValidateException.class)
     public ResponseEntity<?> handleValidationException(Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }
