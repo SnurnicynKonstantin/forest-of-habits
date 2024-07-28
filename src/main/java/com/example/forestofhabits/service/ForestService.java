@@ -28,7 +28,7 @@ public class ForestService {
         return forestRepository //TODO: Replace on view with join
                 .findByAccountId(Util.getAuthInfo().getAccountId())
                 .stream()
-                .map(forestMapper::toDto)
+                .map(forestMapper::toDtoCustom)
                 .toList();
     }
 

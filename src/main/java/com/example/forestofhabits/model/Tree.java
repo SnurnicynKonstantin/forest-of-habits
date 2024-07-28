@@ -4,6 +4,7 @@ import com.example.forestofhabits.enums.TreeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -27,6 +28,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"forest"})
 public class Tree {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +42,7 @@ public class Tree {
   private ZonedDateTime createdAt;
   private int limitActionCount;
 
+//  @ToString.Exclude
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="forest_id", nullable=false)
   private Forest forest;

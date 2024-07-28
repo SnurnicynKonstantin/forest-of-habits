@@ -23,6 +23,11 @@ public class TreeController {
     this.treeService = treeService;
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<TreeDto> getById(@PathVariable Long id)  {
+    return ResponseEntity.ok(treeService.getById(id));
+  }
+
   @GetMapping("/byForest/{forestId}")
   public ResponseEntity<List<TreeDto>> getListOfTreesByForest(@PathVariable Long forestId) {
     return ResponseEntity.ok(treeService.getListOfTrees(forestId));

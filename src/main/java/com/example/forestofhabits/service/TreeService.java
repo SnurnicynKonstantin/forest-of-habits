@@ -1,5 +1,6 @@
 package com.example.forestofhabits.service;
 
+import com.example.forestofhabits.controller.dto.ForestDto;
 import com.example.forestofhabits.controller.dto.TreeDto;
 import com.example.forestofhabits.enums.TreeType;
 import com.example.forestofhabits.mapper.TreeMapper;
@@ -25,6 +26,13 @@ public class TreeService {
     this.treeMapper = TreeMapper.INSTANCE;
   }
 
+  public TreeDto getById(Long treeId) {
+    //TODO: Probably replase on getById + owner validation
+    Tree tree = treeRepository.findById(treeId)
+            .orElseThrow(() -> new EntityNotFoundException("Tree with id = " + treeId + " doesn't exist"));;
+    return treeMapper.toDto(tree);
+  }
+
   public List<TreeDto> getListOfTrees(Long forestId) {
     return treeRepository
             .findByForestAccountIdAndForestId(Util.getAuthInfo().getAccountId(), forestId)
@@ -42,6 +50,7 @@ public class TreeService {
             .type(request.getType())
             .forest(getForest(request.getForestId()))
             .limitActionCount(isBoolean ? 1 : request.getLimit())
+            .createdAt(request.getCreatedAt())
             .build();
     Tree createdTree = treeRepository.save(newTreet);
     return treeMapper.toDtoCustom(createdTree, request.getForestId());
