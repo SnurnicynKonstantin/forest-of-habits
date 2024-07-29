@@ -2,6 +2,7 @@ package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.ForestDto;
 import com.example.forestofhabits.controller.dto.TreeDto;
+import com.example.forestofhabits.enums.TreeStatus;
 import com.example.forestofhabits.enums.TreeType;
 import com.example.forestofhabits.mapper.TreeMapper;
 import com.example.forestofhabits.model.Forest;
@@ -33,9 +34,8 @@ public class TreeService {
     return treeMapper.toDto(tree);
   }
 
-  public List<TreeDto> getListOfTrees(Long forestId) {
-    return treeRepository
-            .findByForestAccountIdAndForestId(Util.getAuthInfo().getAccountId(), forestId)
+  public List<TreeDto> getListOfTrees(Long forestId, TreeStatus status) {
+    return getFilteredTreesByStatus(forestId, status)
             .stream()
             .map(tree -> treeMapper.toDtoCustom(tree, forestId))
             .toList();
@@ -80,5 +80,36 @@ public class TreeService {
     return forestRepository.findById(forestId)
             .orElseThrow(() -> new EntityNotFoundException("Forest with id " + forestId + " not found"));
 
+  }
+
+  private  List<Tree> getFilteredTreesByStatus(Long forestId, TreeStatus status) {
+    //TODO: Need receive all data (trees with actions), after filter it without additional requests
+    List<Tree> trees = treeRepository.findByForestAccountIdAndForestId(Util.getAuthInfo().getAccountId(), forestId);
+
+    return switch (status) {
+      case ALL -> trees;
+      case OPEN -> getOpenTrees(trees);
+      case CLOSE -> getCloseTrees(trees);
+    };
+  }
+
+  private List<Tree> getOpenTrees(List<Tree> trees) {
+    return trees.stream()
+            .filter(tree -> switch (tree.getType()) {
+              case BOOLEAN -> tree.getActions().size() == 0;
+              case INFINITE -> true;
+              case LIMITED -> tree.getActions().size() < tree.getLimitActionCount();
+            })
+            .toList();
+  }
+
+  private List<Tree> getCloseTrees(List<Tree> trees) {
+    return trees.stream()
+            .filter(tree -> switch (tree.getType()) {
+              case BOOLEAN -> tree.getActions().size() > 0;
+              case INFINITE -> false;
+              case LIMITED -> tree.getActions().size() >= tree.getLimitActionCount();
+            })
+            .toList();
   }
 }

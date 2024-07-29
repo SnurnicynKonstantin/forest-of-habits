@@ -6,12 +6,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+import java.util.Set;
+
 @Mapper
 public interface TreeMapper {
   TreeMapper INSTANCE = Mappers.getMapper( TreeMapper.class );
 
   @Mapping(source = "limitActionCount", target = "limit")
   TreeDto toDto(Tree tree);
+
+  @Mapping(source = "limitActionCount", target = "limit")
+  Set<TreeDto> toDtoList(Set<Tree> tree);
 
   default TreeDto toDtoCustom(Tree tree, Long forestId) {
     return TreeDto.builder()

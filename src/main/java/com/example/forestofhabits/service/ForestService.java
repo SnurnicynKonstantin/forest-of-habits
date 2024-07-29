@@ -2,6 +2,7 @@ package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.ForestDto;
 import com.example.forestofhabits.mapper.ForestMapper;
+import com.example.forestofhabits.mapper.TreeMapper;
 import com.example.forestofhabits.model.Account;
 import com.example.forestofhabits.model.Forest;
 import com.example.forestofhabits.repository.AccountRepository;
@@ -11,24 +12,33 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ForestService {
     private final ForestRepository forestRepository;
     private final AccountRepository accountRepository;
     private final ForestMapper forestMapper;
+    private final TreeMapper treeMapper;
 
     public ForestService(ForestRepository forestRepository, AccountRepository accountRepository) {
         this.forestRepository = forestRepository;
         this.accountRepository = accountRepository;
         this.forestMapper = ForestMapper.INSTANCE;
+        this.treeMapper = TreeMapper.INSTANCE;
     }
 
     public List<ForestDto> getListOfForests() {
         return forestRepository //TODO: Replace on view with join
                 .findByAccountId(Util.getAuthInfo().getAccountId())
                 .stream()
-                .map(forestMapper::toDtoCustom)
+                .map(forest -> {
+                    return forestMapper.toDtoCustomWithTrees(
+                            forest,
+                            //TODO: Return last updated trees
+                            treeMapper.toDtoList(forest.getTrees().stream().limit(3).collect(Collectors.toSet()))
+                            );
+                })
                 .toList();
     }
 

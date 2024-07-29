@@ -1,6 +1,7 @@
 package com.example.forestofhabits.controller;
 
 import com.example.forestofhabits.controller.dto.TreeDto;
+import com.example.forestofhabits.enums.TreeStatus;
 import com.example.forestofhabits.service.TreeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,8 +31,10 @@ public class TreeController {
   }
 
   @GetMapping("/byForest/{forestId}")
-  public ResponseEntity<List<TreeDto>> getListOfTreesByForest(@PathVariable Long forestId) {
-    return ResponseEntity.ok(treeService.getListOfTrees(forestId));
+  public ResponseEntity<List<TreeDto>> getListOfTreesByForest(
+          @PathVariable Long forestId,
+          @RequestParam(required = false, defaultValue = "ALL") TreeStatus status) {
+    return ResponseEntity.ok(treeService.getListOfTrees(forestId, status));
   }
 
   @PostMapping

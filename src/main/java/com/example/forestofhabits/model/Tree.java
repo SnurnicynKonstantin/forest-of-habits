@@ -41,8 +41,7 @@ public class Tree {
   private TreeType type;
   private ZonedDateTime createdAt;
   private int limitActionCount;
-
-//  @ToString.Exclude
+  
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="forest_id", nullable=false)
   private Forest forest;

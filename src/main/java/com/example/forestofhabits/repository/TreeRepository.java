@@ -9,7 +9,4 @@ import java.util.List;
 @Repository
 public interface TreeRepository  extends JpaRepository<Tree, Long> {
   List<Tree> findByForestAccountIdAndForestId(Long accountId, Long forestId);
-
-//  @Query("SELECT b FROM Book b JOIN b.author a WHERE a.name = :authorName")
-//  List<Book> findByAuthorName(@Param("authorName") String authorName);
 }

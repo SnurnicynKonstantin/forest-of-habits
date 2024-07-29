@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Set;
 
 @Data
