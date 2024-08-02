@@ -1,6 +1,8 @@
 package com.example.forestofhabits.mapper;
 
+import com.example.forestofhabits.controller.dto.ActionDto;
 import com.example.forestofhabits.controller.dto.TreeDto;
+import com.example.forestofhabits.model.Action;
 import com.example.forestofhabits.model.Tree;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,6 +26,18 @@ public interface TreeMapper {
             .name(tree.getName())
             .id(tree.getId())
             .forestId(forestId)
+            .description(tree.getDescription())
+            .type(tree.getType())
+            .createdAt(tree.getCreatedAt())
+            .limit(tree.getLimitActionCount())
+            .build();
+  }
+
+  default TreeDto toDtoCustomWithActions(Tree tree, Set<ActionDto> actions) {
+    return TreeDto.builder()
+            .name(tree.getName())
+            .id(tree.getId())
+            .actions(actions)
             .description(tree.getDescription())
             .type(tree.getType())
             .createdAt(tree.getCreatedAt())

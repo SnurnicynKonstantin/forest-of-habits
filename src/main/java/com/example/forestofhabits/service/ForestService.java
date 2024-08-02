@@ -1,6 +1,7 @@
 package com.example.forestofhabits.service;
 
 import com.example.forestofhabits.controller.dto.ForestDto;
+import com.example.forestofhabits.mapper.ActionMapper;
 import com.example.forestofhabits.mapper.ForestMapper;
 import com.example.forestofhabits.mapper.TreeMapper;
 import com.example.forestofhabits.model.Account;
@@ -55,6 +56,7 @@ public class ForestService {
                 .name(forestName)
                 .account(getCurrentAccount())
                 .build();
+        //TODO: Учесть дату создания дерева
         Forest createdForest = forestRepository.save(newForest);
         return forestMapper.toDto(createdForest);
     }

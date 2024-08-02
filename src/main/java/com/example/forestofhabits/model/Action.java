@@ -32,8 +32,4 @@ public class Action {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="tree_id", nullable=false)
     private Tree tree;
-    @PrePersist
-    protected void onCreate() {
-        createdAt = ZonedDateTime.now();
-    }
 }

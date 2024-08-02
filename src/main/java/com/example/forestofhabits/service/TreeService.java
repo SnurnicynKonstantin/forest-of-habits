@@ -1,9 +1,11 @@
 package com.example.forestofhabits.service;
 
+import com.example.forestofhabits.controller.dto.ActionDto;
 import com.example.forestofhabits.controller.dto.ForestDto;
 import com.example.forestofhabits.controller.dto.TreeDto;
 import com.example.forestofhabits.enums.TreeStatus;
 import com.example.forestofhabits.enums.TreeType;
+import com.example.forestofhabits.mapper.ActionMapper;
 import com.example.forestofhabits.mapper.TreeMapper;
 import com.example.forestofhabits.model.Forest;
 import com.example.forestofhabits.model.Tree;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TreeService {
@@ -21,17 +24,22 @@ public class TreeService {
   private final ForestRepository forestRepository;
   private final TreeMapper treeMapper;
 
+  private final ActionMapper actionMapper;
+
   public TreeService(TreeRepository treeRepository, ForestRepository forestRepository) {
     this.treeRepository = treeRepository;
     this.forestRepository = forestRepository;
     this.treeMapper = TreeMapper.INSTANCE;
+    this.actionMapper = ActionMapper.INSTANCE;
   }
 
   public TreeDto getById(Long treeId) {
     //TODO: Probably replase on getById + owner validation
     Tree tree = treeRepository.findById(treeId)
-            .orElseThrow(() -> new EntityNotFoundException("Tree with id = " + treeId + " doesn't exist"));;
-    return treeMapper.toDto(tree);
+            .orElseThrow(() -> new EntityNotFoundException("Tree with id = " + treeId + " doesn't exist"));
+    //TODO: Move get actions to mapper
+    Set<ActionDto> actions= actionMapper.toDto(tree.getActions());
+    return treeMapper.toDtoCustomWithActions(tree, actions);
   }
 
   public List<TreeDto> getListOfTrees(Long forestId, TreeStatus status) {

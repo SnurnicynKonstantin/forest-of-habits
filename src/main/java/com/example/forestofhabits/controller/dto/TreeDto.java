@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
+import java.util.Set;
 
 @Data
 @Builder
@@ -16,4 +17,5 @@ public class TreeDto {
   private TreeType type;
   private ZonedDateTime createdAt;
   private int limit;
+  private Set<ActionDto> actions;
 }

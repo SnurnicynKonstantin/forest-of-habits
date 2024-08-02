@@ -32,6 +32,12 @@ public class ActionController {
     return ResponseEntity.ok(actionService.createAction(request));
   }
 
+  @PostMapping("/decrement")
+  public ResponseEntity decrementAction(@RequestBody ActionDto request) {
+    actionService.deleteLastAction(request);
+    return ResponseEntity.ok().build();
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity deleteAction(@PathVariable Long id) {
     actionService.deleteAction(id);
