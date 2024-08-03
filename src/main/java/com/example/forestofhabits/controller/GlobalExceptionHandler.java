@@ -15,19 +15,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<?> handleUnauthorizedException(Exception e) {
-        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(
+                        new ExceptionDto(e.getMessage())
+                );
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> handleNotFoundException(Exception e) {
-        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(
+                        new ExceptionDto(e.getMessage())
+                );
     }
 
     @ExceptionHandler(ValidateException.class)
     public ResponseEntity<?> handleValidationException(Exception e) {
-        ExceptionDto response = ExceptionDto.builder().message(e.getMessage()).build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new ExceptionDto(e.getMessage())
+                );
     }
 }

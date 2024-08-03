@@ -30,10 +30,10 @@ public class AuthenticationService {
     }
 
     public JwtResponseDto login(LoginRequestDto loginRequest) {
-        Account account = accountRepository.findByEmail(loginRequest.getEmail())
+        Account account = accountRepository.findByEmail(loginRequest.email())
                 .orElseThrow(() -> new AuthException("Account doesn't exist"));
 
-        if (!account.getPassword().equals(loginRequest.getPassword())) {
+        if (!account.getPassword().equals(loginRequest.password())) {
             throw new AuthException("Incorrect password");
         }
 
@@ -42,14 +42,14 @@ public class AuthenticationService {
     }
 
     public JwtResponseDto registration(RegistrationDto registrationDto) {
-        Optional<Account> account = accountRepository.findByEmail(registrationDto.getEmail());
+        Optional<Account> account = accountRepository.findByEmail(registrationDto.email());
 
         if(account.isPresent()) {
-            throw new AuthException("Account with email = " + registrationDto.getEmail() + " already exist");
+            throw new AuthException("Account with email = " + registrationDto.email() + " already exist");
         }
 
-        Account newAccount = Account.builder().email(registrationDto.getEmail())
-                .password(registrationDto.getPassword()).name(registrationDto.getName()).build();
+        Account newAccount = Account.builder().email(registrationDto.email())
+                .password(registrationDto.password()).name(registrationDto.name()).build();
 
         accountRepository.save(newAccount);
 
@@ -61,6 +61,6 @@ public class AuthenticationService {
 
     public UserInfoDto getUserInfo() {
         JwtAuthentication userInfo = Util.getAuthInfo();
-        return UserInfoDto.builder().username(userInfo.getUserName()).email(userInfo.getEmail()).build();
+        return new UserInfoDto(userInfo.getUserName(), userInfo.getEmail());
     }
 }
