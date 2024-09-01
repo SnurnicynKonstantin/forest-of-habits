@@ -13,7 +13,7 @@ services:
       - "17432:5432"
   forest-of-habits-api:
     depends_on:
-      - postgres
+      - db
     build: .
     restart: on-failure
     ports:
