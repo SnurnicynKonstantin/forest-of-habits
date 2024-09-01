@@ -17,9 +17,9 @@ services:
     build: .
     restart: on-failure
     ports:
-      - "8097:8080"
+      - "8082:8082"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/forest_of_habits
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db/forest_of_habits
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgresPass
     profiles: [api]

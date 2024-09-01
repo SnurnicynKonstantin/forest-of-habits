@@ -68,7 +68,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: d8ml/forest_of_habits
+          tags: SnurnicynKonstantin/forest_of_habits
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}

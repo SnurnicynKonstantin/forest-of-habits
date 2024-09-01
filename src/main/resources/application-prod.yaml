@@ -1,0 +1,24 @@
+server:
+  port: 8082
+#  servlet:
+#    context-path: /api
+
+spring:
+  application.name: forest_of_habits
+  datasource:
+    url: jdbc:postgresql://45.91.236.223:5432/forest_of_habits
+    username: gen_user
+    password: u_4}nxW9w^7vG}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yaml
+    enabled: true
+
+jwt:
+  expiration: 60
+  secret:
+    key: qBTmv4oXFFR2GwjexDJ4t6fsIUIUhhXqlktXjXdkcyygs8nPVEwMfo29VDRRepYDVV5IkIxBMzr7OEHXEHd37w==
+
+#logging:
+#  level:
+#    root: DEBUG
