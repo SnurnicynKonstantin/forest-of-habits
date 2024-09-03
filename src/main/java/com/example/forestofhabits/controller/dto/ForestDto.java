@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.ZonedDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,6 +15,5 @@ public class ForestDto {
   private ZonedDateTime createdAt;
   private Set<TreeDto> trees;
   private Integer totalNumberTrees;
-  //TODO: Implement shared
-//  private UUID sharedId;
+  private UUID shareId;
 }

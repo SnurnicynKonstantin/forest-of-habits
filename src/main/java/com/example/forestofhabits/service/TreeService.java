@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class TreeService {
@@ -46,6 +47,13 @@ public class TreeService {
     return getFilteredTreesByStatus(forestId, status)
             .stream()
             .map(tree -> treeMapper.toDtoCustom(tree, forestId))
+            .toList();
+  }
+
+  public List<TreeDto> getListOfSharedTrees(UUID shareId, TreeStatus status) {
+    return getFilteredSharedTreesByStatus(shareId, status)
+            .stream()
+            .map(tree -> treeMapper.toDtoCustom(tree, tree.getForest().getId()))
             .toList();
   }
 
@@ -93,7 +101,18 @@ public class TreeService {
   private  List<Tree> getFilteredTreesByStatus(Long forestId, TreeStatus status) {
     //TODO: Need receive all data (trees with actions), after filter it without additional requests
     List<Tree> trees = treeRepository.findByForestAccountIdAndForestId(Util.getAuthInfo().getAccountId(), forestId);
+    return getFilteredTreesByStatus(trees, status);
+  }
 
+  private  List<Tree> getFilteredSharedTreesByStatus(UUID shareId, TreeStatus status) {
+    Forest forest = forestRepository.findByShareId(shareId)
+            .orElseThrow(() -> new EntityNotFoundException("Forest with id " + shareId + " not found"));
+    //TODO: Need receive all data (trees with actions), after filter it without additional requests
+    List<Tree> trees = treeRepository.findByForestId(forest.getId());
+    return getFilteredTreesByStatus(trees, status);
+  }
+
+  private  List<Tree> getFilteredTreesByStatus(List<Tree> trees, TreeStatus status) {
     return switch (status) {
       case ALL -> trees;
       case OPEN -> getOpenTrees(trees);
