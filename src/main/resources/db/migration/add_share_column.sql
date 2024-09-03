@@ -1,0 +1,1 @@
+ALTER TABLE forest ADD COLUMN share_id UUID

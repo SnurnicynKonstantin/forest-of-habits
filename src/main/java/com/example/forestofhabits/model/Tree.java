@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -47,7 +48,7 @@ public class Tree {
   private Forest forest;
 
   @ToString.Exclude
-  @OneToMany(mappedBy="tree", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy="tree", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
   private Set<Action> actions;
 
   @PrePersist

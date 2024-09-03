@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/forest")
@@ -41,6 +42,17 @@ public class ForestController {
   @PutMapping("/{id}")
   public ResponseEntity<ForestDto> updateForest(@RequestBody ForestDto request, @PathVariable Long id) {
     return ResponseEntity.ok(forestService.updateForest(request.getName(), id));
+  }
+
+  @PutMapping("/share/{id}")
+  public ResponseEntity<UUID> shareForest(@PathVariable Long id) {
+    return ResponseEntity.ok(forestService.shareForest(id));
+  }
+
+  @DeleteMapping("/unshare/{id}")
+  public ResponseEntity unshareForest(@PathVariable Long id) {
+    forestService.unshareForest(id);
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")

@@ -1,21 +1,14 @@
 FROM gradle:8.0.2-jdk17 AS build
-
+COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-
-COPY build.gradle settings.gradle gradlew ./
-
-COPY gradle ./gradle
-
-COPY src ./src
-
-RUN ./gradlew build -x test
+RUN gradle build -x test
 
 FROM eclipse-temurin:17
 
-WORKDIR /app
-
-COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
-
 EXPOSE 8082
 
-CMD ["java", "-jar", "./app.jar"]
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java","-jar","/app/spring-boot-application.jar", "--spring.profiles.active=prod"]

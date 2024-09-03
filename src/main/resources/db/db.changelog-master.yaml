@@ -2,3 +2,7 @@ databaseChangeLog:
   - include:
       file: migration/base_migration.sql
       relativeToChangelogFile: true
+
+  - include:
+      file: migration/add_share_column.sql
+      relativeToChangelogFile: true

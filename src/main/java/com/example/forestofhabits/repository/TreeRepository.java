@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TreeRepository  extends JpaRepository<Tree, Long> {
   List<Tree> findByForestAccountIdAndForestId(Long accountId, Long forestId);
+  List<Tree> findByForestId(Long forestId);
 }
